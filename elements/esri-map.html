@@ -1,0 +1,54 @@
+
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+    <script src="http://js.arcgis.com/3.12"></script>
+    
+    <polymer-element name="esri-map" attributes="mapId basemap centerLng centerLat zoom">
+        
+        <template>
+            <style> 
+                .esri-map {
+                    border: 0px;
+                    padding: 0px;
+                    width: 500px;
+                    height: 500px;
+                }
+            </style>
+            <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+            <div id="map" class="esri-map map"></div>
+        </template>
+        
+        <script>
+            Polymer("esri-map", {
+                
+                basemap : "topo",
+                centerLng : 0, 
+                centerLat : 0,
+                zoom: 7, // Reasonable zoom level
+                domReady: function() { 
+                        
+                        var basemap = this.basemap; 
+                        var centerLng = this.centerLng;
+                        var centerLat = this.centerLat;
+                        var zoom = this.zoom;
+                        var mapId = this.$.map; // this.$ allows us to access shadow DOM ids
+                        var map;  
+
+                        require([  
+                        "esri/map",   
+                        "dojo/domReady!"  
+                        ],        
+                        function(Map) {  
+                            
+                            map = new Map(mapId, {  
+                               basemap: basemap,  
+                               center: [centerLng, centerLat], // longitude, latitude  
+                               zoom: zoom 
+                             });  
+
+                        });
+                    }
+                });
+    
+        </script>
+      
+    </polymer-element>
