@@ -1,28 +1,56 @@
 
     <link rel="import" href="../bower_components/polymer/polymer.html">
+    <link rel="import" href="../bower_components/core-icons/core-icons.html">
     <script src="http://js.arcgis.com/3.12"></script>
     
-    <polymer-element name="esri-map" attributes="mapId basemap centerLng centerLat zoom">
+    <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom">
         
         <template>
             <style> 
                 .esri-map {
                     border: 0px;
                     padding: 0px;
-                    width: 500px;
+                    margin: 0px;
                     height: 500px;
+                    width: 500px;
+                    background: #111111;
+                    position: relative;
                 }
+                
+                .esri-boundingbox {
+                    height: 32px;
+                    width: 100px;
+                    position: absolute;
+                    bottom: 5px;
+                    left: 5px;
+                    z-index: 100000000000;
+                }
+                
+                core-icon[icon="check-box-outline-blank"] {
+                    color: #111111;
+                    width: 32px;
+                    height: 32px;
+                  }
+                
             </style>
             <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-            <div id="map" class="esri-map map"></div>
+            
+            <div id="map" class="esri-map map">
+                <div class="esri-boundingbox">
+                    <core-icon icon="check-box-outline-blank"></core-icon><p>{{bottomleft}}</p><p>{{topright}}</p>
+                </div>
+            </div>
         </template>
         
         <script>
-            Polymer("esri-map", {
+          Polymer("esri-map", {
                 
+                // Set some attribute defaults if none set
                 basemap : "topo",
                 centerLng : 0, 
                 centerLat : 0,
+                bottomleft: 0,
+                topright: 0,
                 zoom: 7, // Reasonable zoom level
                 domReady: function() { 
                         
@@ -30,25 +58,56 @@
                         var centerLng = this.centerLng;
                         var centerLat = this.centerLat;
                         var zoom = this.zoom;
-                        var mapId = this.$.map; // this.$ allows us to access shadow DOM ids
-                        var map;  
-
+                        var selectorId = this.$.map; // this.$ allows us to access shadow DOM ids
+                        var webMapId = this.webMapId;
+                        var bottomleft = 0;
+                        var topright = 0;
+                        //console.log(webMapId);
+                    
                         require([  
                         "esri/map",   
+                        "esri/arcgis/utils",
                         "dojo/domReady!"  
-                        ],        
-                        function(Map) {  
+                        ],  
+                        function(Map, arcgisUtils) {  
                             
-                            map = new Map(mapId, {  
-                               basemap: basemap,  
-                               center: [centerLng, centerLat], // longitude, latitude  
-                               zoom: zoom 
-                             });  
+                            var map;
+                            
+                            if (webMapId !== null && webMapId !== undefined && webMapId !== "" && webMapId !== " ") {
+                                console.log("webmap not undefined!");
+                                map = arcgisUtils.createMap(webMapId, selectorId, {
+                                  mapOptions: {
+                                    slider: true,
+                                    nav:false
+                                  }
+                                });
+                            }
+                            
+                            else {
+                                map = new Map(selectorId, {
+                                   basemap: basemap,  
+                                   center: [centerLng, centerLat], // longitude, latitude  
+                                   zoom: zoom 
+                                 });
 
-                        });
-                    }
-                });
-    
+                                map.on("extent-change", function(){
+                                    console.log("Extent changed");
+                                  var geo = map.geographicExtent;
+                                  bottomleft = String(geo.xmin + geo.ymin);
+                                  topright = String(geo.xmax + geo.ymax);
+                                });
+                            }
+                            
+                            
+                            
+                        } 
+                        ); //End of require
+                    }, // End of domReady
+                updateModel: function() {
+                    this.bottomleft = bottomleft
+                    
+                } 
+                }); // End of Polymer
         </script>
       
     </polymer-element>
