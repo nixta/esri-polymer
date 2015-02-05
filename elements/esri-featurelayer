@@ -2,8 +2,9 @@
     <link rel="import" href="../bower_components/polymer/polymer.html">
     <link rel="import" href="../bower_components/core-icons/core-icons.html">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <script src="http://js.arcgis.com/3.12"></script>
     
-    <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom featureLayerList">
+    <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom">
         
         <template>
             <style> 
@@ -84,15 +85,14 @@
         <script>
             require([  
             "esri/map",   
-            "esri/layers/FeatureLayer",
             "esri/arcgis/utils",
             "esri/geometry/Extent",
-            "esri/SpatialReference",           
+            "esri/SpatialReference",
             "esri/geometry/webMercatorUtils",
             "esri/geometry/Point",
             "dojo/domReady!"  
             ],  
-            function(Map, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils,Point) {    
+            function(Map, arcgisUtils, Extent, SpatialReference, webMercatorUtils,Point) {    
                 
                 
             var mapIdCount = 0;    
@@ -108,24 +108,17 @@
                 centerLat : 0,
                 zoom: 7, // Reasonable zoom level
                 boundingBox: " 0, 0, 0, 0",
-                featureLayerList: [],
-                
                 observe: {
                     extent : 'extentChange',
                     boundingBox : 'boundingBoxChange',
-                    zoom : 'zoomChange',
-                    featureLayerList : 'featureLayerListChange'
+                    zoom : 'zoomChange'
                 },
                 ready: function() {
                     
                     //console.log(mapIdCount);
-                    
                     mapIdCount += 1;
                     this.mapId = "map" + mapIdCount;
-                    
-                   
                     var context = this
-                    var featureLayerList = this.featureLayerList;
                     var zoom = this.zoom;
                     var basemap = this.basemap; 
                     var centerLng = this.centerLng;
@@ -145,7 +138,7 @@
                           }
                         }).then( function(returnedMap) {
                             context.map = returnedMap.map;
-                            //console.log("webmapID map", context.map);
+                            console.log("webmapID map", context.map);
                             context.extent = context.map.extent;
                             context.map.on( "extent-change", function(extentObject) {
                                 //console.log(extentObject);
@@ -162,9 +155,9 @@
                            SpatialReference: wkid
                          });
                         
-                        //console.log("Declrative map", this.map);
+                        console.log("Declrative map", this.map);
                         this.map.on( "load", function(loadedMap) {
-                            //console.log("loadedMap", loadedMap.map);
+                            console.log("loadedMap", loadedMap.map);
                             context.extent = loadedMap.map.extent;
                             loadedMap.map.on( "extent-change", function(extentObject) {
                                 //console.log(extentObject);
@@ -178,7 +171,7 @@
                 },
                    
                 zoomChange: function(oldZoom, newZoom) {
-                    //console.log("zoom changed");
+                    console.log("zoom changed");
                     if (isNaN(newZoom)) { newZoom = oldZoom }
                     if (newZoom > this.map.getMaxZoom()) { newZoom = this.map.getMaxZoom() } // Prevent numbers larger than max
                     
@@ -199,23 +192,10 @@
                 },
                 
                 boundingBoxChange: function(oldBoundingBox, newBoundingBox) {
-                    //console.log("boundingBoxChange", newBoundingBox);
-                    var bb = newBoundingBox.split(", ");
+                    console.log("boundingBoxChange", newBoundingBox);
+                    bb = newBoundingBox.split(", ");
                     var newExtent = new Extent( bb[0], bb[1], bb[2], bb[3], this.wkid  );
                     this.map.setExtent(newExtent);
-                },
-                
-                featureLayerListChange: function() {
-                    var featureLayerList = this.featureLayerList;
-                    console.log(featureLayerList);
-                    
-                    if (featureLayerList.length > 0) {
-                        var featureService = featureLayerList.pop();
-                        console.log("feature service", featureService);
-                        var fl = new FeatureLayer(featureService);
-                        this.map.addLayer(fl);
-                        console.log("added feature layer to ", this.map);
-                    }
                 }
                     
             });  // End of Polymer
