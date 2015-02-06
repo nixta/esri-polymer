@@ -1,6 +1,6 @@
 #Esri Polymer  
 
-This project build esri maps into web components that can be used to create maps decleratively to HTML. It leverages Googles Polymer library which allows users to create custom web components.
+This project has turned Esri JavaScript web maps into web components that can be used to create maps decleratively to HTML. It leverages Googles Polymer library which allows users to create custom web components.
 
 It currently supports:
 
@@ -8,6 +8,11 @@ It currently supports:
 
 * esri-featurelayer - Attributes: featurelayer (the feature service url)
 
+#Live Demo
+
+You can see a live demo [here](http://appsstage.esriuk.com/app/developerevangelist/93/wmt/view/d147785761984557b69c73adf4a8e2da/esri-polymer/esri-polymer.html "Esri Polymer Live Demo")
+
+It displays one web map constructed using attributes (basemap, zoom, etc), with a feature layer web component nested inside it and a second map constructed with a web map ID.
 
 #Licensing
 
