@@ -2,6 +2,11 @@
 
 This project build esri maps into web components that can be used to create maps decleratively to HTML. It leverages Googles Polymer library which allows users to create custom web components.
 
+It currently supports:
+
+* <esri-map> - Attributes: basemap, zoom, centerLng, centerLat, webMapId (you can use a web map ID to pull through a map)
+
+* <esri-featurelayer> - Attributes: featurelayer (the feature service url)
 
 
 #Licensing
