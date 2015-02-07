@@ -61,7 +61,7 @@
                 
                 input {
                     border-radius: 2px;
-                    opacity: 0.8;
+                    opacity: 0.65;
                     color: #000001;
                     border:none;
                     
@@ -73,10 +73,10 @@
             <div id={{mapId}} class="esri-map map">
                 <div class="esri-boundingbox">
                     <core-icon icon="check-box-outline-blank"></core-icon>
-                        <form class="p-bounding-box"><input title="Bounding Box" type="text" name="boundingbox" value="{{boundingBox}}"></form>
+                        <form class="p-bounding-box" onSubmit="return false;"><input title="Bounding Box" type="text" name="boundingbox" value="{{boundingBox}}"></form>
                 </div>
                 <div>
-                    <form style="margin: 0px;"><input title="Zoom Level" class="esri-zoombox" type="text" name="zoom" value="{{zoom}}"></form>
+                    <form style="margin: 0px;" onSubmit="return false;"><input title="Zoom Level" class="esri-zoombox" type="text" name="zoom" value="{{zoom}}"></form>
                 </div>
             </div>
         </template>
@@ -94,16 +94,14 @@
             ],  
             function(Map, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils,Point) {    
                 
-                
-            var mapIdCount = 0;    
+            var mapIdCount = 0; //Static instance counter for creating new selector Ids   
             Polymer("esri-map", {
 
                 // Set some attribute defaults if none set
                 mapId : "map",
                 map : undefined,
-                mapLoaded : false,
                 basemap : "topo",
-                extent : "Initial value",
+                extent : undefined,
                 centerLng : 0, 
                 centerLat : 0,
                 zoom: 7, // Reasonable zoom level
@@ -118,12 +116,10 @@
                 },
                 ready: function() {
                     
-                    //console.log(mapIdCount);
+                    mapIdCount += 1; // Static web component counter
+                    this.mapId = "map" + mapIdCount; //Create a unique selector ID
                     
-                    mapIdCount += 1;
-                    this.mapId = "map" + mapIdCount;
-                    
-                   
+                    // Establish variables
                     var context = this
                     var featureLayerList = this.featureLayerList;
                     var zoom = this.zoom;
@@ -133,11 +129,11 @@
                     var selectorId = this.$.map; // this.$ allows us to access shadow DOM ids
                     var webMapId = this.webMapId;
                     var wkid = new SpatialReference({ wkid : 4326 })
-                    
-                    
+
+                    // Defining by Web Map ID - Check the web map Id is not undefined or blank
                     if (webMapId !== null && webMapId !== undefined && webMapId !== "" && webMapId !== " ") {
-                       //console.log("webmap not undefined!");
-                         
+                        
+                        // Create map from web map ID
                        arcgisUtils.createMap(webMapId, selectorId, {
                           mapOptions: {
                             slider: true,
@@ -145,15 +141,14 @@
                           }
                         }).then( function(returnedMap) {
                             context.map = returnedMap.map;
-                            //console.log("webmapID map", context.map);
                             context.extent = context.map.extent;
                             context.map.on( "extent-change", function(extentObject) {
-                                //console.log(extentObject);
-                                context.extent = extentObject.extent;
+                                context.extent = extentObject.extent; // When extent changes when extent changes pass it to polymer for to way data binding
                             });
                         });
                     }
                     
+                    // Defining by HTML attributes
                     else {
                         this.map = new Map(selectorId, {
                            basemap: basemap,  
@@ -162,12 +157,9 @@
                            SpatialReference: wkid
                          });
                         
-                        //console.log("Declrative map", this.map);
                         this.map.on( "load", function(loadedMap) {
-                            //console.log("loadedMap", loadedMap.map);
                             context.extent = loadedMap.map.extent;
                             loadedMap.map.on( "extent-change", function(extentObject) {
-                                //console.log(extentObject);
                                 context.extent = extentObject.extent;
                             });
                         });  
@@ -178,17 +170,17 @@
                 },
                    
                 zoomChange: function(oldZoom, newZoom) {
-                    //console.log("zoom changed");
+                    
                     if (isNaN(newZoom)) { newZoom = oldZoom }
                     if (newZoom > this.map.getMaxZoom()) { newZoom = this.map.getMaxZoom() } // Prevent numbers larger than max
+                    if (newZoom < this.map.getMinZoom()) { newZoom = this.map.getMinZoom() } // Prevent numbers smaller than min
                     
-                    this.map.setZoom(newZoom);
+                    this.map.setZoom(newZoom); 
                 },
                 
                 extentChange: function(oldExtent, newExtent) {
                     
-                    if (newExtent) {
-                        //console.log(newExtent);  
+                    if (newExtent) {  
                         var min = webMercatorUtils.webMercatorToGeographic(new Point( newExtent.xmin, newExtent.ymin) )
                         var max = webMercatorUtils.webMercatorToGeographic(new Point( newExtent.xmax, newExtent.ymax) )
                        
@@ -199,19 +191,15 @@
                 },
                 
                 boundingBoxChange: function(oldBoundingBox, newBoundingBox) {
-                    //console.log("boundingBoxChange", newBoundingBox);
                     var bb = newBoundingBox.split(", ");
                     var newExtent = new Extent( bb[0], bb[1], bb[2], bb[3], this.wkid  );
                     this.map.setExtent(newExtent);
                 },
                 
                 featureLayerListChange: function() {
-                    var featureLayerList = this.featureLayerList;
-                    console.log(featureLayerList);
-                    
+                    var featureLayerList = this.featureLayerList;  
                     if (featureLayerList.length > 0) {
                         var featureService = featureLayerList.pop();
-                        console.log("feature service", featureService);
                         var fl = new FeatureLayer(featureService);
                         this.map.addLayer(fl);
                         console.log("added feature layer to ", this.map);
