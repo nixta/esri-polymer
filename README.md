@@ -8,6 +8,7 @@ It currently supports:
 
 * esri-featurelayer - Attributes: featurelayer (the feature service url)
 
+![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
 
 #Live Demo
 
