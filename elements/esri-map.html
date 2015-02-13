@@ -1,14 +1,14 @@
 
     <link rel="import" href="../bower_components/polymer/polymer.html">
     <link rel="import" href="../bower_components/core-icons/core-icons.html">
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
     
     <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom featureLayerList">
         
         <template>
             <style> 
                 .esri-map {
-                    font-family: 'Roboto', sans-serif;
+                    font-family: 'Nunito', sans-serif;
                     border: 0px;
                     padding: 0px;
                     margin: 0px;
@@ -20,6 +20,7 @@
                 }
                 
                 .esri-boundingbox {
+                    font-family: 'Nunito', sans-serif;
                     height: 22px;
                     width: 115px;
                     position: absolute;
@@ -29,6 +30,7 @@
                 }
                 
                 .esri-zoombox {
+                    font-family: 'Nunito', sans-serif;
                     height: 30px;
                     width: 30px;
                     border-radius: 3px;
@@ -46,6 +48,7 @@
                 }
                 
                 .p-bounding-box {
+                    font-family: 'Nunito', sans-serif;
                     margin: 0px;
                     display: inline-block;
                     width: 0px;
@@ -67,10 +70,14 @@
                     
                 }
                 
+                .esriPopupWrapper { 
+                    font-family: 'Nunito', sans-serif !important;
+                }
+                
             </style>
             <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
             
-            <div id={{mapId}} class="esri-map map">
+            <div id={{mapId}} class="esri-map">
                 <div class="esri-boundingbox">
                     <core-icon icon="check-box-outline-blank"></core-icon>
                         <form class="p-bounding-box" onSubmit="return false;"><input title="Bounding Box" type="text" name="boundingbox" value="{{boundingBox}}"></form>
@@ -83,7 +90,8 @@
         
         <script>
             require([  
-            "esri/map",   
+            "esri/map",
+            "esri/InfoTemplate",
             "esri/layers/FeatureLayer",
             "esri/arcgis/utils",
             "esri/geometry/Extent",
@@ -92,7 +100,7 @@
             "esri/geometry/Point",
             "dojo/domReady!"  
             ],  
-            function(Map, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils,Point) {    
+            function(Map, InfoTemplate, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils,Point) {    
                 
             var mapIdCount = 0; //Static instance counter for creating new selector Ids   
             Polymer("esri-map", {
@@ -128,7 +136,8 @@
                     var centerLat = this.centerLat;
                     var selectorId = this.$.map; // this.$ allows us to access shadow DOM ids
                     var webMapId = this.webMapId;
-                    var wkid = new SpatialReference({ wkid : 4326 })
+                    var wkid = new SpatialReference({ wkid : 4326 });
+                    
 
                     // Defining by Web Map ID - Check the web map Id is not undefined or blank
                     if (webMapId !== null && webMapId !== undefined && webMapId !== "" && webMapId !== " ") {
@@ -202,6 +211,29 @@
                         var featureService = featureLayerList.pop();
                         var fl = new FeatureLayer(featureService);
                         this.map.addLayer(fl);
+                        
+                        fl.on( "click", function (evt) {  
+                            
+                            var graphic = evt.graphic;  
+                            var attributes = evt.graphic.attributes;
+                            var template = new InfoTemplate();  
+                            var templateContent = "";
+                            
+                            for(var prop in attributes) {
+                                if(attributes.hasOwnProperty(prop)) {
+                                    console.log(attributes[prop], prop);
+                                    templateContent = templateContent + "<b>" + prop + "</b>" + " : " + String(attributes[prop]) + "<br>";
+                                    console.log(templateContent);
+                                }
+                            }
+                            
+                            template.setTitle("Feature");
+                            template.setContent(templateContent);
+                            
+                            //console.log("Attributes: ", attributes);  
+                            graphic.setInfoTemplate(template);  
+                        });  
+
                         console.log("added feature layer to ", this.map);
                     }
                 }
