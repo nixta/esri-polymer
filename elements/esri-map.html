@@ -3,7 +3,7 @@
     <link rel="import" href="../bower_components/core-icons/core-icons.html">
     <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
     
-    <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom featureLayerList">
+    <polymer-element name="esri-map" attributes="webMapId basemap centerLng centerLat zoom featureLayerList markerLis">
         
         <template>
             <style> 
@@ -75,6 +75,7 @@
                 }
                 
                 
+                
             </style>
             <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
             
@@ -93,15 +94,17 @@
             require([  
             "esri/map",
             "esri/InfoTemplate",
+            "esri/symbols/PictureMarkerSymbol",
+            "esri/graphic",
             "esri/layers/FeatureLayer",
             "esri/arcgis/utils",
             "esri/geometry/Extent",
             "esri/SpatialReference",           
             "esri/geometry/webMercatorUtils",
             "esri/geometry/Point",
-            "dojo/domReady!"  
+            "dojo/domReady!"     
             ],  
-            function(Map, InfoTemplate, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils, Point) {    
+            function(Map, InfoTemplate, PictureMarkerSymbol, Graphic, FeatureLayer, arcgisUtils, Extent, SpatialReference, webMercatorUtils, Point) {    
                 
             var mapIdCount = 0; //Static instance counter for creating new selector Ids   
             Polymer("esri-map", {
@@ -116,12 +119,14 @@
                 zoom: 7, // Reasonable zoom level
                 boundingBox: " 0, 0, 0, 0",
                 featureLayerList: [],
+                markerList: [],
                 
                 observe: {
                     extent : 'extentChange',
                     boundingBox : 'boundingBoxChange',
                     zoom : 'zoomChange',
-                    featureLayerList : 'featureLayerListChange'
+                    featureLayerList : 'featureLayerListChange',
+                    markerList : 'markerListChange'
                 },
                 ready: function() {
                     
@@ -131,6 +136,7 @@
                     // Establish variables
                     var context = this
                     var featureLayerList = this.featureLayerList;
+                    var markerList = this.markerList;
                     var zoom = this.zoom;
                     var basemap = this.basemap; 
                     var centerLng = this.centerLng;
@@ -229,8 +235,36 @@
                     }
                 },
                 
+                markerListChange: function() {
+                    console.log("markerList changed", this.markerList);
+                    var map = this.map
+                    var wkid = this.wkid
+                    if (this.markerList.length === 1) {
+                        var marker = this.markerList.pop();
+                        console.log("markerList length is 1, ", marker);
+                        if (map) {
+                            map.on("load", function() {
+                                console.log("map is loaded for maker adding");
+                                var lng = marker[0][0];
+                                var lat = marker[0][1];
+                                var title = marker[1];
+                                var content = marker[2];
+                                var symbol = new PictureMarkerSymbol('http://js.arcgis.com/3.12/esri/dijit/images/esriGreenPin16x26.png', 16, 26);
+                                var geometry = new Point(lng, lat, wkid);
+                                var infoTemplate = new InfoTemplate(title, content);
+                                
+                                var graphic = new Graphic(geometry, symbol);
+                                graphic.setInfoTemplate(infoTemplate); 
+    
+                                console.log(graphic);
+                                map.graphics.add(graphic); 
+                            });
+                        }
+                    }
+                },
+                
                 defaultPopupFeatureLayer : function(featureLayer) {
-                    console.log("Default popup feature layer");
+                    //console.log("Default popup feature layer");
                     featureLayer.on( "click", function (evt) {  
 
                         var graphic = evt.graphic;  
@@ -240,9 +274,7 @@
 
                         for(var prop in attributes) {
                             if(attributes.hasOwnProperty(prop)) {
-                                console.log(attributes[prop], prop);
                                 templateContent = templateContent + "<b>" + prop + "</b>" + " : " + String(attributes[prop]) + "<br>";
-                                console.log(templateContent);
                             }
                         }
 
