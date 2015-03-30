@@ -10,9 +10,9 @@ It currently supports:
 
 * esri-marker - Attributes: lat, lng
 
-* esri-marker-title - Attributes: none -  text goes between tags i.e. <esri-marker-title>This is a marker popup title</esri-marker-title>
+* esri-marker-title - Attributes: none -  text goes between tags
 
-* esri-marker-content - Attributes: none - text goes between tags i.e. <esri-marker-content>This is some popup content</esri-marker-content>
+* esri-marker-content - Attributes: none - text goes between tags 
 
 ![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
 
@@ -24,12 +24,12 @@ It displays one web map constructed using attributes (basemap, zoom, etc), with 
 
 #Resources
 
-[Polymer Offical](https://www.polymer-project.org/0.5/ "Polymer Offical")
-[Polymer Developer Guide](https://www.polymer-project.org/0.5/docs/polymer/polymer.html "Polymer Developer Guide")
-[Polymer in 10 minutes](https://www.polymer-project.org/0.5/docs/start/creatingelements.html "Polymer in 10 minutes")
-[A Guide to Web Components](https://css-tricks.com/modular-future-web-components/ "A guide to web components")
-[webcomponents.js](https://github.com/webcomponents/webcomponentsjs "webcomponents.js")
-[Stackoverflow - Polymer](http://stackoverflow.com/search?q=polymer "Stackoverflow - Polymer")
+- [Polymer Offical](https://www.polymer-project.org/0.5/ "Polymer Offical")
+- [Polymer Developer Guide](https://www.polymer-project.org/0.5/docs/polymer/polymer.html "Polymer Developer Guide")
+- [Polymer in 10 minutes](https://www.polymer-project.org/0.5/docs/start/creatingelements.html "Polymer in 10 minutes")
+- [A Guide to Web Components](https://css-tricks.com/modular-future-web-components/ "A guide to web components")
+- [webcomponents.js](https://github.com/webcomponents/webcomponentsjs "webcomponents.js")
+- [Stackoverflow - Polymer](http://stackoverflow.com/search?q=polymer "Stackoverflow - Polymer")
 
 #Issues
 
