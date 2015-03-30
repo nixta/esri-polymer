@@ -23,7 +23,21 @@ It currently supports:
 #
 #Getting Started
 
-An example of using esri-polymer is shown in the esri-polymer.html page in the repository. 
+An example of using esri-polymer is shown in the esri-polymer.html page in the repository. Usage is as so:
+
+    <esri-map basemap="dark-gray" centerLng="-0.122" centerLat="51.514" zoom="7">
+        <esri-featurelayer featurelayer="http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/TubeMap/FeatureServer/2"> </esri-featurelayer>
+        <esri-marker lng="-0.5" lat="51.3">
+            <esri-marker-title>Hello World</esri-marker-title>
+            <esri-marker-content>Some Content</esri-marker-content>
+        </esri-marker>
+    </esri-map>
+    
+For generating a web map from an ID:
+
+    <esri-map webMapId="8960fbd6893348709acac9e7a3b61f0c">
+    </esri-map>
+    
 
 #Live Demo
 
@@ -60,3 +74,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 A copy of the license is available in the repository's LICENSE file.
+
+[](Esri Tags: ArcGIS Web Components Mapping Polymer Google Framework)
+[](Esri Language: JavaScript)
