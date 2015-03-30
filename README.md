@@ -4,6 +4,8 @@ This project has turned Esri ArcGIS JavaScript web maps and asscociated elements
 
 The code also includes examples of how to make use of Polymer's variable observation and two way databinding. The example observes zoom level and extent and represents this as inputs on the map which can themselves be changed.
 
+Feature Layers are supported, and come with a default popup which is just a list of key/value pairs formatted nicely.
+
 It currently supports:
 
 * **esri-map** - Attributes: basemap, zoom, centerLng, centerLat, webMapId (you can use a web map ID to pull through a map)
