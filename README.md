@@ -18,6 +18,8 @@ It currently supports:
 
 ![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
 
+
+
 #Getting Started
 
 An example of using esri-polymer is shown in the esri-polymer.html page in the repository. 
