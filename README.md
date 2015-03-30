@@ -27,6 +27,8 @@ It displays one web map constructed using attributes (basemap, zoom, etc), with 
 - [Polymer Offical](https://www.polymer-project.org/0.5/ "Polymer Offical")
 - [Polymer Developer Guide](https://www.polymer-project.org/0.5/docs/polymer/polymer.html "Polymer Developer Guide")
 - [Polymer in 10 minutes](https://www.polymer-project.org/0.5/docs/start/creatingelements.html "Polymer in 10 minutes")
+- [ArcGIS JavaScript API](https://developers.arcgis.com/javascript/jsapi/ "Esri ArcGIS JavaScript API")
+- [ArcGIS for Developers](https://developers.arcgis.com/ "ArcGIS for Developers")
 - [A Guide to Web Components](https://css-tricks.com/modular-future-web-components/ "A guide to web components")
 - [webcomponents.js](https://github.com/webcomponents/webcomponentsjs "webcomponents.js")
 - [Stackoverflow - Polymer](http://stackoverflow.com/search?q=polymer "Stackoverflow - Polymer")
