@@ -6,15 +6,15 @@ The code also includes examples of how to make use of Polymer's variable observa
 
 It currently supports:
 
-* esri-map - Attributes: basemap, zoom, centerLng, centerLat, webMapId (you can use a web map ID to pull through a map)
+* **esri-map** - Attributes: basemap, zoom, centerLng, centerLat, webMapId (you can use a web map ID to pull through a map)
 
-* esri-featurelayer - Attributes: featurelayer (the feature service url)
+* **esri-featurelayer** - Attributes: featurelayer (the feature service url)
 
-* esri-marker - Attributes: lat, lng
+* **esri-marker** - Attributes: lat, lng
 
-    * esri-marker-title - Attributes: none -  text goes between tags
+    * **esri-marker-title** - Attributes: none -  text goes between tags
 
-    * esri-marker-content - Attributes: none - text goes between tags 
+    * **esri-marker-content** - Attributes: none - text goes between tags 
 
 ![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
 
