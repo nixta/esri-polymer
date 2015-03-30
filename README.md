@@ -8,6 +8,12 @@ It currently supports:
 
 * esri-featurelayer - Attributes: featurelayer (the feature service url)
 
+* esri-marker - Attributes: lat, lng
+
+* esri-marker-title - Attributes: none -  text goes between tags i.e. <esri-marker-title>This is a marker popup title</esri-marker-title>
+
+* esri-marker-content - Attributes: none - text goes between tags i.e. <esri-marker-content>This is some popup content</esri-marker-content>
+
 ![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
 
 #Live Demo
@@ -15,6 +21,14 @@ It currently supports:
 You can see a live demo [here](http://appsstage.esriuk.com/app/developerevangelist/93/wmt/view/d147785761984557b69c73adf4a8e2da/esri-polymer/esri-polymer.html "Esri Polymer Live Demo")
 
 It displays one web map constructed using attributes (basemap, zoom, etc), with a feature layer web component nested inside it and a second map constructed with a web map ID.
+
+#Issues
+
+Find a bug or want to request a new feature? Please let us know by submitting an issue. Thank you!
+
+#Contributing
+
+Anyone and everyone is welcome to contribute. Please see our guidelines for contributing.
 
 #Licensing
 
