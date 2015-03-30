@@ -2,6 +2,8 @@
 
 This project has turned Esri JavaScript web maps into web components that can be used to create maps decleratively to HTML. It leverages Googles Polymer library which allows users to create custom web components.
 
+The code also includes examples of how to make use of polymers two way databindings, observing changes to zoom level and extent and representing this as inputs on the map which can be changed.
+
 It currently supports:
 
 * esri-map - Attributes: basemap, zoom, centerLng, centerLat, webMapId (you can use a web map ID to pull through a map)
@@ -15,6 +17,10 @@ It currently supports:
 * esri-marker-content - Attributes: none - text goes between tags 
 
 ![Esri Polymer Screenshot](https://raw.githubusercontent.com/JamesMilnerUK/esri-polymer/master/screenshot.png "Esri Polymer Screenshot")
+
+#Getting Started
+
+An example of using esri-polymer is shown in the esri-polymer.html page in the repository. 
 
 #Live Demo
 
